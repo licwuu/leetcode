@@ -1,7 +1,7 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+
+import defaultClass.TreeNode;
 
 /*
  * @lc app=leetcode.cn id=113 lang=java
@@ -26,38 +26,39 @@ import java.util.List;
  * }
  */
 class Solution {
-    private static List<List<Integer>> results = new ArrayList<>();
-    public void ps(TreeNode r, List<Integer> rs, int targetSum) {
-
-        rs.add(r.val);
-        targetSum -= r.val;
-
-        if (r.left == null && r.right == null) {
-            if (targetSum == 0) {
-                List<Integer> ar = new ArrayList<Integer>();
-                for (Integer integer : rs) {
-                    ar.add(integer);
-                }
-                results.add(ar);
-            }
-        }
-
-        if (r.left != null) {
-            ps(r.left, rs, targetSum);
-        }
-        if (r.right != null) {
-            ps(r.right, rs, targetSum);
-        }
-        rs.remove(rs.size() - 1);
-    }
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-        results.clear();
-        if (root == null) {
-            return results;
-        }
-        ps(root, new ArrayList<Integer>(), targetSum);
-        return results;
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        dfs(root, targetSum, 0, path, res);
+        return res;
     }
+
+    private void dfs(TreeNode root, int targetSum, int pathSum,
+            List<Integer> path, List<List<Integer>> res) {
+
+        if (root == null) {
+            return;
+        }
+        path.add(root.val);
+        pathSum += root.val;
+        if (root.left == null && root.right == null) {
+            if (targetSum == pathSum) {
+                res.add(new ArrayList<>(path));
+            }
+            path.remove(path.size() - 1);
+            pathSum -= root.val;
+            return;
+        }
+        if (root.left != null) {
+            dfs(root.left, targetSum, pathSum, path, res);
+        }
+        if (root.right != null) {
+            dfs(root.right, targetSum, pathSum, path, res);
+        }
+        path.remove(path.size() - 1);
+        pathSum -= root.val;
+    }
+
 }
 // @lc code=end
 
