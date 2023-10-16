@@ -6,6 +6,8 @@
 </template>
 
 <script lang="ts" setup>
+  import CodeHeader from './components/CodeHeader.vue'
+  import CodeMain from './components/CodeMain.vue'
   import { ref } from 'vue'
 
   let isSM = ref<boolean>(false)
